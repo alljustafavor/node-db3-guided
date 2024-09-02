@@ -17,10 +17,10 @@ async function findPosts(user_id) {
 }
 
 async function find() {
-  const rows = await db('posts as p')
+  const rows = await db('users as u')
     .select('u.id as user_id', 'username')
     .count('p.id as post_count')
-    .join('users as u', 'p.user_id', '=', 'u.id')
+    .leftJoin('posts as p', 'u.id', '=', 'p.user_id')
     .groupBy('u.id', 'username')
 
   return rows;
