@@ -9,26 +9,6 @@ module.exports = {
 }
 
 async function findPosts(user_id) {
-  /*
-    Implement so it resolves this structure:
-
-    [
-      {
-          "post_id": 10,
-          "contents": "Trusting everyone is...",
-          "username": "seneca"
-      },
-      etc
-    ]
-  */
-  //   select
-  //     p.id as post_id,
-  //     contents,
-  //     username
-  // from posts as p
-  // join users as u
-  //     on p.user_id = u.id
-
   const rows = await db('posts as p')
     .select('p.id as post_id', 'contents', 'username')
     .join('users as u', 'p.user_id', '=', 'u.id')
@@ -36,25 +16,14 @@ async function findPosts(user_id) {
   return rows
 }
 
-function find() {
-  return db('users')
-  /*
-    Improve so it resolves this structure:
+async function find() {
+  const rows = await db('posts as p')
+    .select('u.id as user_id', 'username')
+    .count('p.id as post_count')
+    .join('users as u', 'p.user_id', '=', 'u.id')
+    .groupBy('u.id', 'username')
 
-    [
-        {
-            "user_id": 1,
-            "username": "lao_tzu",
-            "post_count": 6
-        },
-        {
-            "user_id": 2,
-            "username": "socrates",
-            "post_count": 3
-        },
-        etc
-    ]
-  */
+  return rows;
 }
 
 function findById(id) {
